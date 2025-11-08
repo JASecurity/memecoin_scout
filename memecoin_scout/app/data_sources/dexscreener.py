@@ -1,120 +1,78 @@
-from __future__ import annotations
-import os
 import time
-import asyncio
 import httpx
 from typing import List
+from ..schemas import TokenInfo, LiquidityInfo, VolumeInfo, HolderStats
 
-from ..schemas import TokenInfo, LiquidityInfo, HolderStats, VolumeInfo, SocialInfo, CodeRisk
-from .birdeye import enrich_with_birdeye
+DEX_URLS = [
+    # current known working endpoints
+    "https://api.dexscreener.com/latest/dex/tokens/solana",
+    "https://api.dexscreener.com/latest/dex/pairs/solana",
+    "https://api.dexscreener.com/latest/dex/search?q=solana"
+]
 
-# DexScreener API URL
-SEARCH_URL = "https://api.dexscreener.com/latest/dex/search"
-
-# Birdeye API Key from environment variable
-BIRDEYE_KEY = os.getenv("BIRDEYE_API_KEY")
-
-async def fetch_new_listings(max_age_minutes: int = 60, limit: int = 50) -> List[TokenInfo]:
+async def fetch_new_listings(max_age_minutes: int = 60) -> List[TokenInfo]:
     """
-    Fetch the newest Solana tokens from DexScreener and enrich them with Birdeye data.
+    Try multiple DexScreener endpoints until one works.
+    Normalize into TokenInfo objects.
     """
-    params = {"q": "raydium solana"}
+    data = None
+    last_error = None
+
+    for url in DEX_URLS:
+        try:
+            async with httpx.AsyncClient(timeout=15) as client:
+                r = await client.get(url)
+                r.raise_for_status()
+                data = r.json()
+                print(f"[debug] DexScreener endpoint OK: {url}")
+                break
+        except Exception as e:
+            last_error = e
+            print(f"[warn] DexScreener endpoint failed: {url} ({e})")
+
+    if not data:
+        raise last_error or RuntimeError("All DexScreener endpoints failed")
+
+    pairs = data.get("pairs") or data.get("tokens") or []
+    now_ms = int(time.time() * 1000)
     tokens: List[TokenInfo] = []
 
-    async with httpx.AsyncClient(timeout=20) as client:
-        r = await client.get(SEARCH_URL, params=params)
-        r.raise_for_status()
-        data = r.json()
+    for p in pairs:
+        created_ms = p.get("pairCreatedAt") or now_ms
+        age_m = max(0, int((now_ms - int(created_ms)) / 1000 / 60))
 
-    print("[debug] DexScreener response keys:", data.keys())
-    print("[debug] number of pairs:", len(data.get("pairs", [])))
-    for pair in data.get("pairs", [])[:5]:
-        base = (pair.get("baseToken") or {}).get("symbol")
-        chain = pair.get("chainId")
-        print("   -", base, "on", chain)
+        liq_usd = 0.0
+        if isinstance(p.get("liquidity"), dict):
+            liq_usd = float(p["liquidity"].get("usd") or 0)
 
-    now_ms = int(time.time() * 1000)
-    for p in data.get("pairs", [])[:limit]:
-        if p.get("chainId") != "solana":
-            continue
-
-        created_ms = p.get("pairCreatedAt")
-        age_minutes = int((now_ms - created_ms) / 60000) if created_ms else 0
-        if created_ms and age_minutes > max_age_minutes:
-            continue
+        vol = p.get("volume") or {}
+        vol_1h = float(vol.get("h1") or 0)
+        vol_24h = float(vol.get("h24") or 0)
+        price_usd = float(p.get("priceUsd") or 0)
 
         txns = p.get("txns") or {}
-        m5 = txns.get("m5") or {}
-        volume = p.get("volume") or {}
-        info = p.get("info") or {}
-        socials = info.get("socials") or []
-        tw_handle = next((s.get("handle") for s in socials if s.get("platform") in ("twitter", "x")), None)
+        h5 = txns.get("h5") or {}
+        trades_5m = int(h5.get("buys") or 0) + int(h5.get("sells") or 0)
+
+        base = p.get("baseToken") or {}
+        symbol = base.get("symbol") or p.get("info", {}).get("baseSymbol") or "UNKNOWN"
+        address = base.get("address") or p.get("pairAddress") or ""
 
         token = TokenInfo(
-            name=(p.get("baseToken") or {}).get("name") or "?",
-            symbol=(p.get("baseToken") or {}).get("symbol") or "?",
+            symbol=symbol,
             chain="solana",
-            address=(p.get("baseToken") or {}).get("address") or "",
-            pair_address=p.get("pairAddress"),
-            age_minutes=age_minutes,
-            fdv_usd=p.get("fdv"),
-            liquidity=LiquidityInfo(
-                usd=((p.get("liquidity") or {}).get("usd") or 0),
-                lp_lock_ratio=0.0,
-                buy_tax_bps=0,
-                sell_tax_bps=0,
-            ),
+            address=address,
+            price_usd=price_usd,
+            liquidity=LiquidityInfo(usd=liq_usd, lp_lock_ratio=0.0),
+            volume=VolumeInfo(usd_1h=vol_1h, usd_24h=vol_24h),
             holders=HolderStats(holder_count=0, top1_pct=0.0, top5_pct=0.0),
-            volume=VolumeInfo(
-                volume_usd_5m=0.0,
-                volume_usd_1h=(volume.get("h1") or 0),
-                trades_5m=int((m5.get("buys") or 0) + (m5.get("sells") or 0)),
-                buyers_5m=int(m5.get("buys") or 0),
-                sellers_5m=int(m5.get("sells") or 0),
-            ),
-            social=SocialInfo(twitter_handle=tw_handle),
-            code_risk=CodeRisk(
-                sol_mint_authority_revoked=None,
-                sol_freeze_authority_revoked=None,
-                owner_renounced_or_timelock=None,
-                has_blacklist_or_whitelist=None,
-            ),
-            honeypot_flag=False,
+            age_minutes=age_m,
+            fdv_usd=float(p.get("fdv") or 0),
+            dex_trades_5m=trades_5m,
         )
 
-        # 🔥 Enrich with Birdeye (holders + mint/freeze authority)
-        if BIRDEYE_KEY and token.address:
-            try:
-                holders, risk = await enrich_with_birdeye(token.address, BIRDEYE_KEY)
-                token.holders = holders
-                token.code_risk = risk
-                await asyncio.sleep(1.0)  # ⏳ stay under 60 requests/min (safe)
-            except httpx.HTTPStatusError as e:
-                print(f"[birdeye] HTTP error for {token.symbol}: {e.response.status_code}")
-            except Exception as e:
-                print(f"[birdeye] failed for {token.symbol}: {e}")
+        if age_m <= max_age_minutes:
+            tokens.append(token)
 
-        tokens.append(token)
-
+    print(f"[debug] number of pairs: {len(tokens)}")
     return tokens
-
-
-def normalize_from_dict(d: dict) -> TokenInfo:
-    """
-    Rebuild a TokenInfo object from a dictionary (used for demo/testing).
-    """
-    return TokenInfo(
-        name=d.get("name", "?"),
-        symbol=d.get("symbol", "?"),
-        chain=d.get("chain", "solana"),
-        address=d.get("address", ""),
-        pair_address=d.get("pair_address"),
-        age_minutes=int(d.get("age_minutes", 0)),
-        fdv_usd=d.get("fdv_usd"),
-        liquidity=LiquidityInfo(**d.get("liquidity", {})),
-        holders=HolderStats(**d.get("holders", {})),
-        volume=VolumeInfo(**d.get("volume", {})),
-        social=SocialInfo(**d.get("social", {})),
-        code_risk=CodeRisk(**d.get("code_risk", {})),
-        honeypot_flag=d.get("honeypot_flag", False),
-    )
