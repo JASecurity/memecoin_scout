@@ -2,7 +2,8 @@
 
 **Automated Solana Memecoin Discovery & Paper Trading System**
 
-[![Dashboard Screenshot](screenshot.png)](screenshot.png)
+<img width="1920" height="1080" alt="Screenshot (189)" src="https://github.com/user-attachments/assets/7e7ec719-5a34-4544-a033-6712ef34db72" />
+
 
 Real-time token scanner that identifies promising new memecoins on Solana, applies risk filters, scores momentum, simulates paper trades, and visualizes everything via an interactive dashboard. Built as a modular foundation for live trading strategies.
 
