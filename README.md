@@ -11,38 +11,34 @@ Real-time token scanner that identifies promising new memecoins on Solana, appli
 
 ## 🚀 Features
 
-- **Real-time DexScreener Scanning**: Fetches new Solana token pairs every 90 seconds
-- **Advanced Scoring Engine**: Combines liquidity, volume, holders, social signals, and code quality metrics
-- **Hard Risk Filters**: Enforces minimum liquidity ($5K+), volume, holder count, LP lock (50%+), and age limits
-- **Paper Trading Engine**: Simulates buys/sells with trade logging and position tracking
-- **SQLite Persistence**: Stores tokens, trades, and positions for analysis
-- **Streamlit Dashboard**: Live views of top tokens, trade logs, and position summaries
-- **Telegram Alerts**: Optional notifications for trade entries/exits
-- **Sniper Strategy**: Configurable risk-managed entry logic with take-profit/stop-loss levels
-- **Modular Architecture**: Easy to extend for live Jupiter swaps or multi-chain support
-
+- **Real-time DexScreener Scanning**: Fetches new Solana token pairs every 3 minutes
+- **Advanced Scoring Engine**: Combines liquidity, volume, holders, and social signals
+- **Hard Risk Filters**: Min $3K liquidity, 5+ holders, 50%+ LP lock, low taxes
+- **Momentum Spike Detection**: Identifies volume/price surges for early alerts
+- **SQLite Persistence**: Stores all token data for analysis
+- **Streamlit Dashboard**: Live views of scanned tokens and alerts
+- **Telegram Alerts**: Instant notifications for qualifying tokens
+- **Modular Architecture**: Easy to extend for auto-trading or multi-chain
 
 ## 🏗️ Tech Stack
 
-Python 3.11+ | Streamlit | SQLite | Rich | Requests | Pandas
-Solana/DexScreener APIs | Telegram Bot API
-
+Python 3.11+ | asyncio | Streamlit | SQLite | Pandas
+DexScreener APIs | Telegram Bot API
 
 ## 📁 Project Structure
-
 memecoin_scout/
 ├── app/
-│ ├── main.py # Core scanning + trading loop
+│ ├── main.py # Async scanning loop
 │ ├── filters.py # Risk filtering logic
-│ ├── scorer.py # Momentum scoring engine
-│ ├── storagedb.py # SQLite database operations
-│ ├── trading/ # Strategy, risk mgmt, paper broker
+│ ├── scorer.py # Token scoring engine
+│ ├── storagedb.py # SQLite operations
 │ └── alerting/ # Telegram notifications
 ├── dashboard.py # Streamlit visualization
-├── utils.py # Rich table formatting
-├── config.yaml # Thresholds & API keys
+├── utils.py # Data formatting
+├── config.yaml # Filters & API keys
 ├── requirements.txt # Dependencies
 └── README.md
+
 
 text
 
@@ -51,13 +47,11 @@ text
 DexScreener → Filter (liq/vol/holders) → Score (momentum/risk) →
 Paper Trade → SQLite → Dashboard/Alerts
 
-text
-
 1. **Scanner** polls new Solana pairs
 2. **Filters** reject rugs/low-liq tokens
 3. **Scorer** ranks survivors (0-1.0 scale)
-4. **Strategy** decides entry size if score > 0.75
-5. **Paper Broker** logs simulated trades
+4. **Momentum Detector** flags volume spikes
+5. **Telegram** sends instant alerts
 6. **Dashboard** shows real-time insights
 
 ## 🛠️ Quick Start
