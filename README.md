@@ -9,15 +9,18 @@ Real-time token scanner that identifies promising new memecoins on Solana, appli
 
 ## 🚀 Features
 
+## 🚀 Features
+
 - **Real-time DexScreener Scanning**: Fetches new Solana token pairs every 90 seconds
 - **Advanced Scoring Engine**: Combines liquidity, volume, holders, social signals, and code quality metrics
 - **Hard Risk Filters**: Enforces minimum liquidity ($5K+), volume, holder count, LP lock (50%+), and age limits
-- **Paper Trading Engine**: Simulates buys/sells with position tracking and P&L logging
+- **Paper Trading Engine**: Simulates buys/sells with trade logging and position tracking
 - **SQLite Persistence**: Stores tokens, trades, and positions for analysis
 - **Streamlit Dashboard**: Live views of top tokens, trade logs, and position summaries
 - **Telegram Alerts**: Optional notifications for trade entries/exits
 - **Sniper Strategy**: Configurable risk-managed entry logic with take-profit/stop-loss levels
 - **Modular Architecture**: Easy to extend for live Jupiter swaps or multi-chain support
+
 
 ## 🏗️ Tech Stack
 
