@@ -1,11 +1,11 @@
 # Memecoin Scout Bot
 
-**Automated Solana Memecoin Discovery & Paper Trading System**
+**Automated Solana Memecoin Discovery**
 
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 
 
-Real-time token scanner that identifies promising new memecoins on Solana, applies risk filters, scores momentum, simulates paper trades, and visualizes everything via an interactive dashboard. Built as a modular foundation for live trading strategies.
+Real-time token scanner that identifies promising new memecoins on Solana, applies risk filters, scores momentum, and visualizes everything via an interactive dashboard. Built as a modular foundation for live trading strategies.
 
 ## 🚀 Features
 
@@ -44,8 +44,7 @@ text
 
 ## 🎯 How It Works
 
-DexScreener → Filter (liq/vol/holders) → Score (momentum/risk) →
-Paper Trade → SQLite → Dashboard/Alerts
+DexScreener → Filter (liq/vol/holders) → Score (momentum/risk) → SQLite → Dashboard/Alerts
 
 1. **Scanner** polls new Solana pairs
 2. **Filters** reject rugs/low-liq tokens
