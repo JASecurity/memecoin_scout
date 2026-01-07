@@ -9,8 +9,6 @@ Real-time token scanner that identifies promising new memecoins on Solana, appli
 
 ## 🚀 Features
 
-## 🚀 Features
-
 - **Real-time DexScreener Scanning**: Fetches new Solana token pairs every 3 minutes
 - **Advanced Scoring Engine**: Combines liquidity, volume, holders, and social signals
 - **Hard Risk Filters**: Min $3K liquidity, 5+ holders, 50%+ LP lock, low taxes
