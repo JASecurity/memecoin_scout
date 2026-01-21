@@ -5,7 +5,7 @@
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 
 JA Security | Web3 & DeFi Security Projects
-Memecoin Scout
+
 
 Memecoin Scout is a real-time scanner for newly launched Solana tokens.
 It monitors fresh pairs, applies configurable risk filters, scores momentum, and surfaces high-signal candidates through a lightweight dashboard.
