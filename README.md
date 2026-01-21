@@ -155,10 +155,6 @@ Why This Project Matters
 ➡ Operational discipline around configuration and environments
 ➡ Use of real live market data instead of static examples
 
-It is part of a broader body of work under:
-
-JA Security | Web3 & DeFi Security Projects
-Hands-on security research, analysis, and tooling focused on Web3, DeFi, and smart contract ecosystems.
 
 License
 
