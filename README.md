@@ -164,4 +164,4 @@ License
 
 MIT — free to fork, extend, and deploy.
 
-Built by JA Security | Web3 & DeFi Security Projects
+Built by JA Security 
