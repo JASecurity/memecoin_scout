@@ -4,13 +4,6 @@
 
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 
-
-Here is the full README with VS Code mentioned and only one set of commands:
-
-Memecoin Scout Bot
-Automated Solana Memecoin Discovery
-
-<img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 Memecoin Scout is a real-time scanner for new Solana tokens. It tracks fresh launches, applies risk filters, scores momentum, and surfaces interesting candidates in a simple dashboard. The goal is to provide a solid foundation for building and testing live trading strategies.
 
 Features
