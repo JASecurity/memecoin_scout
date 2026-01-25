@@ -4,9 +4,7 @@
 
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 
-Perfect. Here’s a **short, sharp, portfolio-grade README**. This is the kind that recruiters, engineers, and security people actually read.
-
-You can copy-paste this as your main README, or use it as a featured project.
+Here’s the **full, short, clean README** with the **“How to Run” section included**, ready to copy-paste into GitHub.
 
 ---
 
@@ -22,7 +20,7 @@ Built by **JA Security**
 **Memecoin Scout** is a real-time scanner for newly launched Solana tokens.
 It detects new trading pairs, applies risk filters, scores momentum, and surfaces higher-signal candidates through a lightweight dashboard.
 
-The project is designed as a **research and monitoring system** for live on-chain market data and serves as a foundation for future automation and security-focused analysis.
+The project is designed as a **research and monitoring system** for live on-chain market data and serves as a foundation for future automation and security-focused experimentation.
 
 ---
 
@@ -54,11 +52,65 @@ The scanner continuously ingests live market data, filters obvious risk, scores 
 
 ---
 
+## Running the Project (Windows)
+
+Open **two terminals**. Both must stay running.
+
+---
+
+### Terminal 1 — Start the Scanner (Bot)
+
+```powershell
+cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
+.\.venv\Scripts\Activate.ps1
+$env:PYTHONPATH = "."
+python app/main.py --live
+```
+
+**Expected output:**
+
+```
+[debug] Found 105 Solana pairs
+[debug] 3 live solana pairs accepted after filtering
+💎 HIDDEN GEM FOUND: ...
+```
+
+The scanner will continue running and monitoring new Solana pairs in real time.
+
+---
+
+### Terminal 2 — Start the Dashboard
+
+```powershell
+cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
+.\.venv\Scripts\Activate.ps1
+streamlit run app/dashboard.py
+```
+
+Streamlit will output a local URL, typically:
+
+```
+http://localhost:8501
+```
+
+Open this URL in your browser to view the live dashboard.
+
+---
+
+### Notes
+
+* The scanner writes data to SQLite
+* The dashboard reads live data from the database
+* New tokens appear automatically as they are detected
+* Thresholds and alerts are configurable via `config.yaml`
+
+---
+
 ## Why It Matters
 
 * End-to-end async system design
-* Real-world risk filtering in adversarial markets
-* Live data ingestion (not static examples)
+* Practical risk filtering in adversarial markets
+* Uses **live market data**, not static samples
 * Clean separation of scanning, scoring, storage, and UI
 
 ---
@@ -73,9 +125,4 @@ MIT
 
 ---
 
-This version signals:
-
-* Engineering maturity
-* Security awareness
-* Practical Web3 experience
 
