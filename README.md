@@ -4,7 +4,10 @@
 
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 
-Here’s the **full, short, clean README** with the **“How to Run” section included**, ready to copy-paste into GitHub.
+
+Perfect move. Calling out **PowerShell explicitly** prevents 90% of “it doesn’t work” issues.
+
+Below is the **full, final README** with a **clear PowerShell note added**, still short and portfolio-clean. This is ready to paste into GitHub.
 
 ---
 
@@ -54,7 +57,11 @@ The scanner continuously ingests live market data, filters obvious risk, scores 
 
 ## Running the Project (Windows)
 
-Open **two terminals**. Both must stay running.
+> **Note:**
+> The commands below are written for **Windows PowerShell**.
+> They will not work as-is in Command Prompt or Git Bash.
+
+Open **two PowerShell terminals**. Both must stay running.
 
 ---
 
@@ -99,6 +106,7 @@ Open this URL in your browser to view the live dashboard.
 
 ### Notes
 
+* Both terminals must remain running
 * The scanner writes data to SQLite
 * The dashboard reads live data from the database
 * New tokens appear automatically as they are detected
@@ -124,5 +132,13 @@ MIT
 **Built by JA Security | Web3 & DeFi Security Projects**
 
 ---
+
+This README now does three important things:
+
+* Removes ambiguity about the shell
+* Shows you can **run and operate** your own system
+* Reads cleanly for recruiters and engineers
+
+If you want, next we can add a **single-line “Security Lens”** that frames this as a defensive Web3 monitoring tool rather than “just trading.”
 
 
