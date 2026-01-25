@@ -133,12 +133,6 @@ MIT
 
 ---
 
-This README now does three important things:
 
-* Removes ambiguity about the shell
-* Shows you can **run and operate** your own system
-* Reads cleanly for recruiters and engineers
-
-If you want, next we can add a **single-line “Security Lens”** that frames this as a defensive Web3 monitoring tool rather than “just trading.”
 
 
