@@ -11,25 +11,39 @@ The project is designed as a foundation for research, monitoring, and experiment
 
 Key Capabilities
 ➡ Real-time scanning of new Solana pairs via DexScreener
+
 ➡ Risk filtering to remove obvious rugs and low-liquidity tokens
+
 ➡ Scoring engine combining liquidity, volume, age, holders, and momentum signals
+
 ➡ Momentum detection for volume and price spikes
+
 ➡ SQLite persistence for historical tracking and analysis
+
 ➡ Streamlit dashboard for live exploration and filtering
+
 ➡ Optional Telegram alerts for higher-scoring candidates
+
 ➡ Modular architecture designed for extensibility (auto-trading, multi-chain support)
 
 Tech Stack
+
 ➡ Python 3.11+
+
 ➡ Asyncio for concurrent scanning
+
 ➡ Streamlit for the dashboard UI
+
 ➡ SQLite for lightweight persistence
+
 ➡ Pandas for data handling
+
 ➡ DexScreener API
+
 ➡ Telegram Bot API (optional alerts)
 
 Project Structure
-text
+
 memecoin_scout/
 ├── app/
 │   ├── main.py              # Async scanning loop
@@ -55,11 +69,14 @@ DexScreener → Filters → Scorer → SQLite → Dashboard / Alerts
 ➡ Optional Telegram alerts trigger for higher-scoring tokens
 
 Quick Start
+
 Clone and Set Up
 bash
+
 git clone https://github.com/JASecurity/memecoin_scout
 cd memecoin_scout
 python -m venv .venv
+
 Windows:
 
 powershell
@@ -75,7 +92,6 @@ pip install -r requirements.txt
 Configuration
 Edit config.yaml to match your setup and risk tolerance:
 
-text
 min_liq_usd: 5000
 min_vol_5m_usd: 2000
 min_score_to_trade: 0.75
@@ -120,7 +136,7 @@ cd memecoin_scout
 streamlit run dashboard.py
 Windows (Command Prompt):
 
-text
+
 cd memecoin_scout
 .venv\Scripts\activate.bat
 streamlit run dashboard.py
@@ -196,21 +212,30 @@ Roadmap
 Planned or potential extensions:
 
 ➡ Live trading integration (e.g., Jupiter DEX)
+
 ➡ Smarter token classification with richer feature sets
+
 ➡ Multi-chain support (Base, Ethereum, BSC, etc.)
+
 ➡ Backtesting using SQLite history
+
 ➡ Additional alert channels (Discord, Webhooks)
+
 ➡ More advanced risk and position-sizing logic
 
 Why This Project Matters
 ➡ End-to-end system design (async ingestion → storage → UI)
+
 ➡ Practical risk filtering in noisy, adversarial markets
+
 ➡ Operational discipline around configuration and environments
+
 ➡ Use of real live market data instead of static examples
 
 License
+
 MIT — free to fork, extend, and deploy.
 
 Built by JA Security
 Web3 & DeFi Security Projects
-Built by JA Security 
+
