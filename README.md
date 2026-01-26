@@ -1,6 +1,7 @@
 # **BLOCK BOY SECURITY CONSOLE**
 
-<img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
+
+<img width="1889" height="837" alt="gameboy console style" src="https://github.com/user-attachments/assets/5659406a-7bad-485c-aad2-7e3ccbe08309" />
 
 ---
 
