@@ -1,4 +1,4 @@
-Block Boy Security Console
+# **BLOCK BOY SECURITY CONSOLE**
 
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
 
