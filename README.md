@@ -1,63 +1,98 @@
-
----
-# Memecoin Scout
+Block Boy Security Console
 
 <img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
-
-
-**Real-Time Solana Token Scanner**
-Built by **JA Security**
 
 ---
 
 ## Overview
 
-**Memecoin Scout** is a real-time scanner for newly launched Solana tokens.
-It detects new trading pairs, applies risk filters, scores momentum, and surfaces higher-signal candidates through a lightweight dashboard.
+**Block Boy Security Console** is a real-time scanner for newly launched **Solana tokens** with integrated **Ethereum smart contract security analysis**.
 
-The project is designed as a **research and monitoring system** for live on-chain market data and serves as a foundation for future automation and security-focused experimentation.
+It detects new trading pairs, applies risk filters, scores momentum and security risks, and surfaces high-signal candidates through a lightweight dashboard.
+
+Designed as a **multi-chain research and monitoring system**, it provides live on-chain market insights and serves as a foundation for **automation, trading, and security research**.
 
 ---
 
-## Core Capabilities
+## Core Features
 
-* Real-time scanning of new Solana pairs (DexScreener)
-* Risk filtering to remove low-liquidity and high-risk tokens
-* Momentum-based scoring (liquidity, volume, age, holders)
-* SQLite persistence for historical analysis
+### Solana Token Scanning
+
+* Real-time detection of new Solana pairs (DexScreener, Raydium, Orca, Pump.fun)
+* Scans ~96 unique token pairs every 60–90 seconds
+* Liquidity and risk-based filtering
+* Momentum scoring: liquidity, volume, age, holders
+* Tracks processed tokens to avoid duplicates
+
+### Ethereum Smart Contract Security
+
+* Security scanning via **GoPlus Security API**
+* Honeypot detection & buy/sell tax analysis
+* Risk scoring system (0–100 scale)
+* Detects mintable tokens, hidden owners, suspicious patterns
+* Integrates **Alchemy API** for Ethereum mainnet access
+
+### Data Management & Alerts
+
+* SQLite database for historical analysis
 * Streamlit dashboard for live monitoring
 * Optional Telegram alerts for high-scoring tokens
-* Modular, extensible architecture
+* Modular and extensible architecture
 
 ---
 
 ## Tech Stack
 
-Python · Asyncio · Streamlit · SQLite · Pandas · DexScreener API · Telegram Bot API
+```
+Python · Asyncio · Streamlit · SQLite · Pandas
+DexScreener API · GoPlus Security API · Alchemy API · Telegram Bot API
+```
 
 ---
 
-## How It Works
+## Architecture
 
 ```
 DexScreener → Filters → Scoring → SQLite → Dashboard / Alerts
+                    ↓
+        GoPlus Security (Ethereum)
 ```
 
-The scanner continuously ingests live market data, filters obvious risk, scores remaining tokens on a 0–1 scale, stores results, and exposes them through a live dashboard.
+The scanner continuously ingests live data from Solana & Ethereum, filters risks, scores tokens, stores results, and exposes them via a live dashboard.
 
 ---
 
-## Running the Project (Windows)
+## Filters & Rules
 
-> **Note:**
-> The commands below are written for **Windows PowerShell**.
-> They will not work as-is in Command Prompt or Git Bash.
+### Solana Filters
 
-Open **two PowerShell terminals**. Both must stay running.
+| Filter            | Threshold            |
+| ----------------- | -------------------- |
+| Minimum Liquidity | $1,500               |
+| Maximum Liquidity | $1,000,000           |
+| Minimum Holders   | 10+                  |
+| Token Age         | 5–1440 minutes       |
+| Price Range       | Low-priced memecoins |
+| Tax/Honeypot      | Detection enabled    |
+
+### Ethereum Security Checks
+
+| Check                 | Description                            |
+| --------------------- | -------------------------------------- |
+| Honeypot Detection    | Detect malicious contracts             |
+| Buy/Sell Tax Analysis | Flags high tax tokens                  |
+| Holder Distribution   | Detects abnormal holder patterns       |
+| Mintable Token        | Detects contracts that can mint tokens |
+| Hidden Owner          | Checks for non-transparent ownership   |
+| Verification Status   | Confirms verified contract on Ethereum |
 
 ---
 
-### Terminal 1 — Start the Scanner (Bot)
+## Installation & Running (Windows)
+
+> **Note:** Commands are for **PowerShell**. Both terminals must remain open.
+
+### Terminal 1 — Start Scanner
 
 ```powershell
 cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
@@ -66,7 +101,7 @@ $env:PYTHONPATH = "."
 python app/main.py --live
 ```
 
-**Expected output:**
+**Expected Output:**
 
 ```
 [debug] Found 105 Solana pairs
@@ -74,11 +109,7 @@ python app/main.py --live
 💎 HIDDEN GEM FOUND: ...
 ```
 
-The scanner will continue running and monitoring new Solana pairs in real time.
-
----
-
-### Terminal 2 — Start the Dashboard
+### Terminal 2 — Start Dashboard
 
 ```powershell
 cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
@@ -86,44 +117,91 @@ cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
 streamlit run app/dashboard.py
 ```
 
-Streamlit will output a local URL, typically:
+* Streamlit will provide a local URL (e.g., `http://localhost:8501`)
+* Open in browser for live dashboard
 
-```
-http://localhost:8501
-```
+### Testing Ethereum Scanner (Optional)
 
-Open this URL in your browser to view the live dashboard.
+```powershell
+cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout\app
+python -c "from ethereum_scanner import scan_ethereum_contract; import json; print(json.dumps(scan_ethereum_contract('0xdac17f958d2ee523a2206206994597c13d831ec7'), indent=2))"
+```
 
 ---
 
-### Notes
+## Configuration
 
-* Both terminals must remain running
-* The scanner writes data to SQLite
-* The dashboard reads live data from the database
-* New tokens appear automatically as they are detected
-* Thresholds and alerts are configurable via `config.yaml`
+**`config.yaml` Settings**
+
+* Liquidity thresholds
+* Holder requirements
+* Scan intervals
+* Risk score thresholds
+* Telegram alert settings
+* Ethereum/Solana chain priorities
+
+**`.env` Environment Variables**
+
+```
+ALCHEMY_URL=your_alchemy_url
+GOPLUS_API_KEY=your_goplus_key
+TELEGRAM_BOT_TOKEN=your_telegram_token
+TELEGRAM_CHAT_ID=your_chat_id
+```
 
 ---
 
 ## Why It Matters
 
-* End-to-end async system design
+* **Async system design** for real-time monitoring
+* Multi-chain security analysis (Solana + Ethereum)
 * Practical risk filtering in adversarial markets
-* Uses **live market data**, not static samples
-* Clean separation of scanning, scoring, storage, and UI
+* Live data-driven insights
+* Clean separation: scanning → scoring → storage → UI
+* Demonstrates real-world **Web3 security skills**
+* Foundation for automated trading strategies
+
+---
+
+## Roadmap
+
+**Current Phase: Risk Scoring Optimization**
+
+* Fine-tune Ethereum scoring to reduce false positives
+* Expand whitelist for legitimate contracts
+* Advanced honeypot detection
+
+**Next Phase: Web Dashboard**
+
+* Unified Solana + Ethereum interface
+* Real-time risk visualization
+* Historical data analysis
+
+**Future Enhancements**
+
+* Additional EVM chains (BSC, Polygon, Arbitrum)
+* Wallet tracking and analysis
+* Automated alert optimization
+* DEX aggregator integration
 
 ---
 
 ## License
 
-MIT
+MIT License
 
 ---
 
 **Built by JA Security | Web3 & DeFi Security Projects**
 
 ---
+
+I can also make a **super-condensed “code view friendly” version** with **tables, inline bullets, and minimal images**, perfect for GitHub users who mostly read in raw Markdown.
+
+Do you want me to create that ultra-clean code-style version next?
+
+
+
 
 
 
