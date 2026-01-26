@@ -196,10 +196,6 @@ MIT License
 
 ---
 
-I can also make a **super-condensed “code view friendly” version** with **tables, inline bullets, and minimal images**, perfect for GitHub users who mostly read in raw Markdown.
-
-Do you want me to create that ultra-clean code-style version next?
-
 
 
 
