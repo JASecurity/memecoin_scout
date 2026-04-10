@@ -1,0 +1,25 @@
+global:
+  chains: ["solana"]
+  min_liquidity_usd: 50
+  max_fdv_usd: 100000000
+  min_holders: 0
+  min_age_minutes: 0
+  max_age_minutes: 480
+  max_buy_tax_bps: 0
+  max_sell_tax_bps: 0
+  max_top1_holder_pct: 100
+  max_top5_holder_pct: 100
+  require_contract_verified: false
+  require_owner_renounced_or_timelock: false
+  require_mint_authority_revoked: false
+  min_lp_lock_ratio: 0.0
+  min_dex_trades_5m: 0
+  min_volume_usd_1h: 0
+
+data_sources:
+  birdeye:
+    api_key: "c47c2a7086284a889e5470e2f066b332"
+    multi_price_endpoint: "https://public-api.birdeye.so/defi/multi_price"
+    enabled: true
+  dexscreener:
+    enabled: true
