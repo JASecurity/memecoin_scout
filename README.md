@@ -1,10 +1,8 @@
-
 # Block Boy Security Console
 
 <img width="1916" height="908" alt="Screenshot 2026-04-10 200931" src="https://github.com/user-attachments/assets/1fc4781b-9b6b-4a5e-95a2-7249afdbb6b8" />
 
-
-A real-time scanner for newly launched Solana tokens. Detects new trading pairs, applies risk filters, scores momentum and security signals, and surfaces high-confidence candidates through a lightweight live dashboard.
+A real-time scanner for newly launched Solana tokens. Detects new trading pairs, applies risk filters, scores momentum and security signals, and surfaces high-confidence candidates through an immersive retro live dashboard.
 
 Designed as a Solana-focused research and monitoring system, it provides live on-chain market insights and serves as a foundation for automation, trading strategy development, and security research.
 
@@ -32,7 +30,7 @@ Designed as a Solana-focused research and monitoring system, it provides live on
 ## Tech Stack
 
 ```
-Python · Asyncio · Streamlit · SQLite · Pandas
+Python · Asyncio · Streamlit · SQLite · Pandas · Plotly
 DexScreener API · Solana RPC · Telegram Bot API
 ```
 
@@ -70,8 +68,8 @@ The default filter values are intentionally strict to minimize noise and surface
 ### Terminal 1 — Start the Scanner
 
 ```powershell
-cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
-.\.venv\Scripts\Activate.ps1
+cd C:\Users\joeya\Downloads\memecoin_scout-main\memecoin_scout-main\memecoin_scout
+C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout\.venv\Scripts\Activate.ps1
 $env:PYTHONPATH = "."
 python app/main.py --live
 ```
@@ -79,6 +77,8 @@ python app/main.py --live
 **Expected output:**
 
 ```
+[live] Memecoin Scout + Momentum started...
+[info] Fetching new tokens from DexScreener...
 [debug] Found 105 Solana pairs
 [debug] 3 live solana pairs accepted after filtering
 HIDDEN GEM FOUND: ...
@@ -87,9 +87,9 @@ HIDDEN GEM FOUND: ...
 ### Terminal 2 — Start the Dashboard
 
 ```powershell
-cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
-.\.venv\Scripts\Activate.ps1
-streamlit run app/dashboard.py
+cd C:\Users\joeya\Downloads\memecoin_scout-main\memecoin_scout-main
+C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout\.venv\Scripts\Activate.ps1
+streamlit run memecoin_scout/dashboard.py
 ```
 
 Streamlit will output a local URL such as `http://localhost:8501`. Open this address in a browser to view the live dashboard.
