@@ -1,5 +1,8 @@
-<img width="1916" height="908" alt="Screenshot 2026-04-10 200931" src="https://github.com/user-attachments/assets/1fc4781b-9b6b-4a5e-95a2-7249afdbb6b8" />
+
 # Block Boy Security Console
+
+<img width="1916" height="908" alt="Screenshot 2026-04-10 200931" src="https://github.com/user-attachments/assets/1fc4781b-9b6b-4a5e-95a2-7249afdbb6b8" />
+
 
 A real-time scanner for newly launched Solana tokens. Detects new trading pairs, applies risk filters, scores momentum and security signals, and surfaces high-confidence candidates through a lightweight live dashboard.
 
