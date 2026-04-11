@@ -63,32 +63,58 @@ The default filter values are intentionally strict to minimize noise and surface
 
 ## Installation and Setup (Windows)
 
-> **Note:** Both terminals must remain open while the system is running.
+> **Important:** Run each command one at a time. Copy one line, hit Enter, wait for it to finish, then do the next. Never combine commands on the same line.
+
+---
 
 ### Step 1 — Clone the repo
 
+Open PowerShell and run these one at a time:
+
 ```powershell
 git clone https://github.com/joseph-alexan/sol-token-scanner.git
+```
+
+```powershell
 cd sol-token-scanner
 ```
+
+---
 
 ### Step 2 — Create a virtual environment
 
 ```powershell
 python -m venv .venv
+```
+
+```powershell
 .\.venv\Scripts\Activate.ps1
 ```
+
+You should see `(.venv)` appear at the start of your terminal line. That means it worked.
+
+> **If Activate.ps1 is blocked**, run this first then try again:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
+
+---
 
 ### Step 3 — Install dependencies
 
 ```powershell
 pip install -r memecoin_scout/requirements.txt
+```
+
+```powershell
 pip install plotly
 ```
 
+---
+
 ### Step 4 — Set up your environment variables
 
-Create a `.env` file inside the `memecoin_scout` folder:
+Inside the `memecoin_scout` folder, create a file called `.env` and add the following:
 
 ```
 SOLANA_RPC_URL=your_rpc_url
@@ -96,15 +122,27 @@ TELEGRAM_BOT_TOKEN=your_telegram_token
 TELEGRAM_CHAT_ID=your_chat_id
 ```
 
+Telegram alerts are optional. The scanner will run without them.
+
 ---
 
 ## Running the Project
+
+You need **two terminals open at the same time**. Open Terminal 1, start the scanner, then open a second terminal and start the dashboard.
+
+---
 
 ### Terminal 1 — Start the Scanner
 
 ```powershell
 cd sol-token-scanner/memecoin_scout
+```
+
+```powershell
 $env:PYTHONPATH = "."
+```
+
+```powershell
 python app/main.py --live
 ```
 
@@ -118,14 +156,33 @@ python app/main.py --live
 HIDDEN GEM FOUND: ...
 ```
 
+Leave this terminal running. Do not close it.
+
+---
+
 ### Terminal 2 — Start the Dashboard
+
+Open a new terminal window, then run these one at a time:
 
 ```powershell
 cd sol-token-scanner
+```
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+```powershell
 streamlit run memecoin_scout/dashboard.py
 ```
 
-Open `http://localhost:8501` in your browser to view the live dashboard.
+Then open your browser and go to:
+
+```
+http://localhost:8501
+```
+
+The dashboard will auto-refresh as the scanner finds new tokens.
 
 ---
 
