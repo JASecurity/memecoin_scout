@@ -1,135 +1,155 @@
-# Memecoin Scout Bot
+# Block Boy Security Console
 
-**Automated Solana Memecoin Discovery & Paper Trading System**
+A real-time scanner for newly launched Solana tokens. Detects new trading pairs, applies risk filters, scores momentum and security signals, and surfaces high-confidence candidates through a lightweight live dashboard.
 
-<img width="1880" height="830" alt="Screenshot (188)" src="https://github.com/user-attachments/assets/eea0e16c-c407-4236-8230-aaea68a63c74" />
-
-
-Real-time token scanner that identifies promising new memecoins on Solana, applies risk filters, scores momentum, simulates paper trades, and visualizes everything via an interactive dashboard. Built as a modular foundation for live trading strategies.
-
-## 🚀 Features
-
-## 🚀 Features
-
-- **Real-time DexScreener Scanning**: Fetches new Solana token pairs every 3 minutes
-- **Advanced Scoring Engine**: Combines liquidity, volume, holders, and social signals
-- **Hard Risk Filters**: Min $3K liquidity, 5+ holders, 50%+ LP lock, low taxes
-- **Momentum Spike Detection**: Identifies volume/price surges for early alerts
-- **SQLite Persistence**: Stores all token data for analysis
-- **Streamlit Dashboard**: Live views of scanned tokens and alerts
-- **Telegram Alerts**: Instant notifications for qualifying tokens
-- **Modular Architecture**: Easy to extend for auto-trading or multi-chain
-
-## 🏗️ Tech Stack
-
-Python 3.11+ | asyncio | Streamlit | SQLite | Pandas
-DexScreener APIs | Telegram Bot API
-
-## 📁 Project Structure
-memecoin_scout/
-├── app/
-│ ├── main.py # Async scanning loop
-│ ├── filters.py # Risk filtering logic
-│ ├── scorer.py # Token scoring engine
-│ ├── storagedb.py # SQLite operations
-│ └── alerting/ # Telegram notifications
-├── dashboard.py # Streamlit visualization
-├── utils.py # Data formatting
-├── config.yaml # Filters & API keys
-├── requirements.txt # Dependencies
-└── README.md
-
-
-text
-
-## 🎯 How It Works
-
-DexScreener → Filter (liq/vol/holders) → Score (momentum/risk) →
-Paper Trade → SQLite → Dashboard/Alerts
-
-1. **Scanner** polls new Solana pairs
-2. **Filters** reject rugs/low-liq tokens
-3. **Scorer** ranks survivors (0-1.0 scale)
-4. **Momentum Detector** flags volume spikes
-5. **Telegram** sends instant alerts
-6. **Dashboard** shows real-time insights
-
-## 🛠️ Quick Start
-
-### Prerequisites
-git clone <repo>
-cd memecoin_scout
-python -m venv .venv
-.venv\Scripts\activate # Windows
-pip install -r requirements.txt
-
-
-### 1. Run Live Bot (Terminal 1)
-& ".venv\Scripts\python.exe" -m app.main --live
-
-
-### 2. Open Dashboard (Terminal 2)
-& ".venv\Scripts\python.exe" -m streamlit run dashboard.py
-
-
-
-## ⚙️ Configuration
-
-Edit `config.yaml`:
-min_liq_usd: 5000
-min_vol_5m_usd: 2000
-min_score_to_trade: 0.75
-telegram_token: "your_bot_token"
-telegram_chat_id: "your_chat_id"
-paper_mode: true
-
-
-## 📊 Dashboard Screenshots
-
-**Latest Tokens Table**
-| Rank | Symbol | Score | Liq USD | Vol 1H | Holders | LP Lock |
-|------|--------|-------|---------|--------|---------|---------|
-| 1    | $MOON  | 0.92  | $12.5K  | $8.2K  | 245     | 87%     |
-
-**Trade Log & Positions**
-
-## 🔮 Future Roadmap
-
-- [ ] Live Jupiter DEX trading
-- [ ] AI-powered token classification
-- [ ] Multi-chain (Base, ETH, BSC)
-- [ ] Backtesting engine
-- [ ] Discord webhooks
-- [ ] Advanced risk models
-
-💼 Why Employers Should Care
-This project demonstrates:
-
-Full-Stack Development: APIs, databases, web UIs, async processing
-
-Financial Engineering: Risk management, position sizing, strategy backtesting
-
-DevOps: Virtualenvs, config management, logging, monitoring
-
-Real-World Data: Live crypto APIs, high-frequency polling
-
-Production-Ready: Error handling, persistence, alerting, dashboards
-
-10+ years construction management → Cybersecurity → Now algorithmic trading
-
-Transitioning from foundation specialist/crew leader to building production trading systems. Self-taught Python, Solana ecosystem, and quant strategies.
-
-
-## 📄 License
-MIT - Free to fork, extend, deploy.
+Designed as a Solana-focused research and monitoring system, it provides live on-chain market insights and serves as a foundation for automation, trading strategy development, and security research.
 
 ---
 
-⭐ **Star if you find memecoin hunting interesting!**  
-💬 **Issues/PRs welcome**  
-🔗 **Demo video coming soon**
+## Features
+
+### Solana Token Scanning
+
+- Real-time detection of new Solana pairs via DexScreener, Raydium, Orca, and Pump.fun
+- Scans approximately 96 unique token pairs every 60 to 90 seconds
+- Liquidity and risk-based filtering pipeline
+- Momentum scoring across liquidity, volume, age, and holder count
+- Duplicate tracking to prevent redundant processing
+
+### Data Management and Alerts
+
+- SQLite database for persistent historical analysis
+- Streamlit dashboard for live token monitoring
+- Optional Telegram alerts for high-scoring token candidates
+- Modular and extensible architecture
 
 ---
 
-*Built by InvestaDad - Aspiring Cybersecurity Analyst | Google Cybersecurity Cert | Future Smart Contract Auditor*
+## Tech Stack
 
+```
+Python · Asyncio · Streamlit · SQLite · Pandas
+DexScreener API · Solana RPC · Telegram Bot API
+```
+
+---
+
+## Architecture
+
+```
+DexScreener → Filters → Scoring → SQLite → Dashboard / Alerts
+```
+
+The scanner continuously ingests live Solana market data, applies risk filters, scores tokens against configurable thresholds, persists results to a local database, and exposes them via a live web dashboard.
+
+---
+
+## Filters and Thresholds
+
+The default filter values are intentionally strict to minimize noise and surface only high-confidence candidates. Depending on your risk tolerance and scanning goals, you may want to loosen these thresholds — for example, lowering the minimum holder count or extending the token age window. All values are adjustable via `config.yaml`.
+
+| Filter | Threshold |
+| --- | --- |
+| Minimum Liquidity | $1,500 |
+| Maximum Liquidity | $1,000,000 |
+| Minimum Holders | 10 |
+| Token Age | 5 to 1,440 minutes |
+| Price Range | Low-priced memecoins |
+| Tax / Honeypot Detection | Enabled |
+
+---
+
+## Installation and Setup (Windows)
+
+> **Note:** The following commands are written for PowerShell. Both terminals must remain open while the system is running.
+
+### Terminal 1 — Start the Scanner
+
+```powershell
+cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
+.\.venv\Scripts\Activate.ps1
+$env:PYTHONPATH = "."
+python app/main.py --live
+```
+
+**Expected output:**
+
+```
+[debug] Found 105 Solana pairs
+[debug] 3 live solana pairs accepted after filtering
+HIDDEN GEM FOUND: ...
+```
+
+### Terminal 2 — Start the Dashboard
+
+```powershell
+cd C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout
+.\.venv\Scripts\Activate.ps1
+streamlit run app/dashboard.py
+```
+
+Streamlit will output a local URL such as `http://localhost:8501`. Open this address in a browser to view the live dashboard.
+
+---
+
+## Configuration
+
+### `config.yaml`
+
+- Liquidity thresholds
+- Holder requirements
+- Scan intervals
+- Risk score thresholds
+- Telegram alert settings
+
+### `.env` Environment Variables
+
+```
+SOLANA_RPC_URL=your_rpc_url
+TELEGRAM_BOT_TOKEN=your_telegram_token
+TELEGRAM_CHAT_ID=your_chat_id
+```
+
+---
+
+## Why This Project
+
+- Async system design for real-time, low-latency monitoring
+- Solana-native token discovery and on-chain analysis
+- Practical risk filtering in adversarial memecoin markets
+- Clean separation of concerns: scanning, scoring, storage, and UI
+- Demonstrates applied Web3 security and data engineering skills
+- Foundation for automated Solana trading and alerting strategies
+
+---
+
+## Roadmap
+
+**Current Phase: Risk Scoring Optimization**
+
+- Reduce false positives on new Solana launches
+- Improve liquidity and holder-based heuristics
+- Advanced honeypot and rug-risk detection
+
+**Next Phase: Enhanced Web Dashboard**
+
+- Expanded real-time visualizations
+- Historical trend analysis
+- Token comparison tools
+
+**Future Enhancements**
+
+- Solana wallet tracking and behavioral analysis
+- Automated alert optimization
+- DEX aggregator integration
+- Strategy backtesting on historical Solana data
+
+---
+
+## License
+
+MIT License
+
+---
+
+Built by Joseph Alexan | Web3 and DeFi Security Projects
