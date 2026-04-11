@@ -63,13 +63,47 @@ The default filter values are intentionally strict to minimize noise and surface
 
 ## Installation and Setup (Windows)
 
-> **Note:** The following commands are written for PowerShell. Both terminals must remain open while the system is running.
+> **Note:** Both terminals must remain open while the system is running.
+
+### Step 1 — Clone the repo
+
+```powershell
+git clone https://github.com/joseph-alexan/sol-token-scanner.git
+cd sol-token-scanner
+```
+
+### Step 2 — Create a virtual environment
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+### Step 3 — Install dependencies
+
+```powershell
+pip install -r memecoin_scout/requirements.txt
+pip install plotly
+```
+
+### Step 4 — Set up your environment variables
+
+Create a `.env` file inside the `memecoin_scout` folder:
+
+```
+SOLANA_RPC_URL=your_rpc_url
+TELEGRAM_BOT_TOKEN=your_telegram_token
+TELEGRAM_CHAT_ID=your_chat_id
+```
+
+---
+
+## Running the Project
 
 ### Terminal 1 — Start the Scanner
 
 ```powershell
-cd C:\Users\joeya\Downloads\memecoin_scout-main\memecoin_scout-main\memecoin_scout
-C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout\.venv\Scripts\Activate.ps1
+cd sol-token-scanner/memecoin_scout
 $env:PYTHONPATH = "."
 python app/main.py --live
 ```
@@ -87,12 +121,11 @@ HIDDEN GEM FOUND: ...
 ### Terminal 2 — Start the Dashboard
 
 ```powershell
-cd C:\Users\joeya\Downloads\memecoin_scout-main\memecoin_scout-main
-C:\Users\joeya\Downloads\memecoin_scout\memecoin_scout\.venv\Scripts\Activate.ps1
+cd sol-token-scanner
 streamlit run memecoin_scout/dashboard.py
 ```
 
-Streamlit will output a local URL such as `http://localhost:8501`. Open this address in a browser to view the live dashboard.
+Open `http://localhost:8501` in your browser to view the live dashboard.
 
 ---
 
@@ -105,14 +138,6 @@ Streamlit will output a local URL such as `http://localhost:8501`. Open this add
 - Scan intervals
 - Risk score thresholds
 - Telegram alert settings
-
-### `.env` Environment Variables
-
-```
-SOLANA_RPC_URL=your_rpc_url
-TELEGRAM_BOT_TOKEN=your_telegram_token
-TELEGRAM_CHAT_ID=your_chat_id
-```
 
 ---
 
